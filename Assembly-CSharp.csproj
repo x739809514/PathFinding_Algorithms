@@ -45,23 +45,26 @@
     <Analyzer Include="D:\Unity\2022.3.10f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\LowMan\Scripts\ThirdPersonCharacter.cs" />
+     <Compile Include="Assets\Resources\LowMan\Scripts\ThirdPersonCharacter.cs" />
      <Compile Include="Assets\Scripts\ObsticalController.cs" />
+     <Compile Include="Assets\Scripts\PERoot.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Folder Include="Assets" />
-     <Folder Include="Assets\LowMan\Models" />
+     <Folder Include="Assets\Resources\LowMan\Models" />
      <Folder Include="Assets\Scenes\Example03" />
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\Timeline" />
      <Folder Include="Assets\Resources" />
-     <Folder Include="Assets\LowMan\Materials" />
+     <Folder Include="Assets\Resources\LowMan\Materials" />
+     <Folder Include="Assets\Resources\Prefabs" />
      <Folder Include="Assets\Scenes" />
-     <Folder Include="Assets\LowMan\Animation\Clips" />
-     <Folder Include="Assets\LowMan\Animation" />
-     <Folder Include="Assets\LowMan" />
+     <Folder Include="Assets\Resources\LowMan\Animation\Clips" />
+     <Folder Include="Assets\Resources\LowMan\Animation" />
+     <Folder Include="Assets\Resources\Materials" />
+     <Folder Include="Assets\Resources\LowMan" />
      <Folder Include="Assets\Scenes\Example04" />
      <Folder Include="Assets\Scenes\Example01" />
-     <Folder Include="Assets\LowMan\Scripts" />
+     <Folder Include="Assets\Resources\LowMan\Scripts" />
      <Reference Include="UnityEngine">
      <HintPath>D:\Unity\2022.3.10f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>
@@ -316,6 +319,9 @@
      </Reference>
      <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
      <HintPath>D:\A工作区\PathFinding_Algorithms\Library\PackageCache\com.unity.visualscripting@1.9.0\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+     </Reference>
+     <Reference Include="PELog">
+     <HintPath>D:\A工作区\PathFinding_Algorithms\Assets\Plugins\PELog.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>D:\Unity\2022.3.10f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
