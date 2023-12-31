@@ -45,15 +45,18 @@
     <Analyzer Include="D:\Unity\2022.3.10f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\FunnelAlgorithm\NavVector.cs" />
+     <Compile Include="Assets\Scripts\FunnelAlgorithm\NavConfig.cs" />
      <Compile Include="Assets\Resources\LowMan\Scripts\ThirdPersonCharacter.cs" />
+     <Compile Include="Assets\Scripts\FunnelAlgorithm\PERoot.cs" />
      <Compile Include="Assets\Scripts\ObsticalController.cs" />
-     <Compile Include="Assets\Scripts\PERoot.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Resources\LowMan\Models" />
      <Folder Include="Assets\Scenes\Example03" />
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\Timeline" />
+     <Folder Include="Assets\Scripts\FunnelAlgorithm" />
      <Folder Include="Assets\Resources" />
      <Folder Include="Assets\Resources\LowMan\Materials" />
      <Folder Include="Assets\Resources\Prefabs" />
