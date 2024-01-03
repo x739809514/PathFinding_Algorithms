@@ -7,12 +7,7 @@ namespace FunnelAlgorithm
     {
         public Transform areaIDTrans;
 
-        private void Start()
-        {
-            
-        }
-
-        private void ShowAreaID(NavVector pos,int areaID)
+        public void ShowAreaID(NavVector pos,int areaID)
         {
             var go = new GameObject { name = $"areaID{areaID}" };
             go.transform.SetParent(areaIDTrans);

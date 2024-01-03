@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Numerics;
 using FunnelAlgorithm;
 using PEUtils;
 using UnityEngine;
@@ -12,12 +10,23 @@ public class PERoot : MonoBehaviour
     private NavConfig config;
     private NavVector[] pointsArr;
     private List<int[]> indexList;
-
+    private NavArea navArea;
+    private NavMap navMap;
+   
     void Start()
     {
         PELog.InitSettings(LoggerType.Unity);
         PELog.LogGreen("Init PELog Done.");
         InitNavConfig();
+
+        var navView = transform.GetComponent<NavView>();
+        if (navView!=null)
+        {
+            NavMap.showAreaIDHandle += navView.ShowAreaID;
+        }
+
+        navMap = new NavMap(indexList, pointsArr);
+        navMap.SetBorderList();
     }
 
     private void OnDrawGizmos()

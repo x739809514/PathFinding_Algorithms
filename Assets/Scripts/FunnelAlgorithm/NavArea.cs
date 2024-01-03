@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace FunnelAlgorithm
 {
     public class NavArea
@@ -6,8 +8,9 @@ namespace FunnelAlgorithm
         private NavVector[] pointsArr;
         public int areaID;
         public NavVector center = NavVector.Zero;
-        public NavVector min = new NavVector(float.MaxValue, float.MaxValue, float.MaxValue);
-        public NavVector max = new NavVector(float.MinValue, float.MinValue, float.MinValue);
+        private NavVector min = new NavVector(float.MaxValue, float.MaxValue, float.MaxValue);
+        private NavVector max = new NavVector(float.MinValue, float.MinValue, float.MinValue);
+        public List<NavBorder> borderList;
         
         public NavArea(int id,int[] indexes, NavVector[] points)
         {
