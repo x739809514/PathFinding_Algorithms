@@ -554,6 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f374ea1290614b4ea360e004811d8a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wireColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
