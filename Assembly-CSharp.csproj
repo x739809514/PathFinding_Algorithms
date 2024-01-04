@@ -48,13 +48,14 @@
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavArea.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavVector.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavConfig.cs" />
+     <Compile Include="Assets\Scripts\NavMesh\ObsticalController.cs" />
      <Compile Include="Assets\Resources\LowMan\Scripts\ThirdPersonCharacter.cs" />
+     <Compile Include="Assets\Scripts\FunnelAlgorithm\AStar.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\Mono\NavView.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavBorder.cs" />
+     <Compile Include="Assets\Scripts\NavMesh\PlayerController.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\PERoot.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavMap.cs" />
-     <Compile Include="Assets\Scripts\ObsticalController.cs" />
-     <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Resources\LowMan\Models" />
      <Folder Include="Assets\Scenes\Example03" />
@@ -67,6 +68,7 @@
      <Folder Include="Assets\Scenes" />
      <Folder Include="Assets\Resources\LowMan\Animation\Clips" />
      <Folder Include="Assets\Scripts\FunnelAlgorithm\Mono" />
+     <Folder Include="Assets\Scripts\NavMesh" />
      <Folder Include="Assets\Resources\LowMan\Animation" />
      <Folder Include="Assets\Resources\Materials" />
      <Folder Include="Assets\Resources\LowMan" />

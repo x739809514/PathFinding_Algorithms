@@ -65,6 +65,11 @@ namespace FunnelAlgorithm
             return Math.Abs(v1.x - v2.x) > 0.01f || Math.Abs(v1.y - v2.y) > 0.01f || Math.Abs(v1.z - v2.z) > 0.01f;
         }
 
+        public static float Distance(NavVector v1, NavVector v2)
+        {
+            return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+        }
+
         public Vector3 ConvertToUnityVector()
         {
             return new Vector3(x, y, z);

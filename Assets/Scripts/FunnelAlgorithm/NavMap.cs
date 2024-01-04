@@ -5,12 +5,13 @@ using UnityEditor.Timeline.Actions;
 
 namespace FunnelAlgorithm
 {
-    public class NavMap
+    public partial class NavMap
     {
         private readonly List<int[]> indexList;
         private readonly NavVector[] pointsArr;
         private NavArea[] areaArr;
         public static Action<NavVector, int> showAreaIDHandle;
+        public static Action<List<NavArea>> showPathAreaHandle;
         
         private Dictionary<string, NavBorder> borderList = new Dictionary<string, NavBorder>();
         private Dictionary<string, NavBorder> areaList = new Dictionary<string, NavBorder>();

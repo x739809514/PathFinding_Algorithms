@@ -20,9 +20,11 @@ public class PERoot : MonoBehaviour
         InitNavConfig();
 
         var navView = transform.GetComponent<NavView>();
+        navView.pointsArr = pointsArr;
         if (navView!=null)
         {
             NavMap.showAreaIDHandle += navView.ShowAreaID;
+            NavMap.showPathAreaHandle += navView.ShowPathAreas;
         }
 
         navMap = new NavMap(indexList, pointsArr);
