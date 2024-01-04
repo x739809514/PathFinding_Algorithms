@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 
 namespace FunnelAlgorithm
 {
-    public class NavArea
+    public class NavArea : IComparable<NavArea>
     {
         public readonly int[] indexArr;
         private readonly NavVector[] pointsArr;
         public readonly int areaID;
+        public NavBorder targetBorder;
         public NavVector center = NavVector.Zero;
         private NavVector min = new NavVector(float.MaxValue, float.MaxValue, float.MaxValue);
         private NavVector max = new NavVector(float.MinValue, float.MinValue, float.MinValue);
@@ -14,9 +16,9 @@ namespace FunnelAlgorithm
         
         //A Star
         private NavVector start = NavVector.Zero;
-        private float weight;
-        private float sumDistance = float.PositiveInfinity;
-        private NavArea preArea;
+        public float weight;
+        public float sumDistance = float.PositiveInfinity;
+        public NavArea preArea;
 
         public NavArea(int id, int[] indexes, NavVector[] points)
         {
@@ -71,6 +73,33 @@ namespace FunnelAlgorithm
             }
 
             return minDis;
+        }
+
+        public int CompareTo(NavArea other)
+        {
+            if (weight< other.weight)
+            {
+                return -1;
+            }
+            else if (weight > other.weight)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        
+        public void Reset() {
+            targetBorder = null;
+            start = NavVector.Zero;
+            weight = 0;
+            sumDistance = float.PositiveInfinity;
+            preArea = null;
+        }
+        public override string ToString() {
+            return $"AreaID:{areaID}";
         }
     }
 }

@@ -121,5 +121,14 @@ namespace FunnelAlgorithm
 
             return list;
         }
+        
+        NavBorder GetBorderByAreaIDKey(string key) {
+            if(areaList.TryGetValue(key, out NavBorder border)) {
+                return border;
+            }
+            else {
+                return null;
+            }
+        }
     }
 }
