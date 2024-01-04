@@ -52,12 +52,14 @@
      <Compile Include="Assets\Resources\LowMan\Scripts\ThirdPersonCharacter.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\AStar.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\Mono\NavView.cs" />
+     <Compile Include="Assets\Scripts\FunnelAlgorithm\Utility\PriorityQueue.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavBorder.cs" />
      <Compile Include="Assets\Scripts\NavMesh\PlayerController.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\PERoot.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavMap.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Resources\LowMan\Models" />
+     <Folder Include="Assets\Scripts\FunnelAlgorithm\Utility" />
      <Folder Include="Assets\Scenes\Example03" />
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\Timeline" />

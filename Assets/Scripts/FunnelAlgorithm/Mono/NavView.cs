@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FunnelAlgorithm.Utility;
 using UnityEngine;
 
 namespace FunnelAlgorithm
@@ -8,7 +9,7 @@ namespace FunnelAlgorithm
     {
         public Transform areaIDTrans;
         public NavVector[] pointsArr;
-
+        
         public void ShowAreaID(NavVector pos, int areaID)
         {
             var go = new GameObject { name = $"areaID{areaID}" };
