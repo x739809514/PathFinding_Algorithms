@@ -36,7 +36,7 @@ namespace FunnelAlgorithm
                 {
                     var v1 = pointsArr[indexArr[j]];
                     var v2 = pointsArr[indexArr[k]];
-                    DebugDrawLine(v1,v2,Color.yellow,5f);
+                    DebugDrawLine(v1,v2,Color.yellow,2f);
                 }
             }
         }

@@ -73,7 +73,7 @@ public class PERoot : MonoBehaviour
                 if (canMouseClick)
                 {
                     var start = GameObject.FindGameObjectWithTag("Start").transform;
-                    start.position = hit.transform.position;
+                    start.position = hit.point;
                     startNav = new NavVector(start.position);
                 }
             }
@@ -85,8 +85,8 @@ public class PERoot : MonoBehaviour
             {
                 if (canMouseClick)
                 {
-                    var target = GameObject.FindGameObjectWithTag("Start").transform;
-                    target.position = hit.transform.position;
+                    var target = GameObject.FindGameObjectWithTag("Target").transform;
+                    target.position = hit.point;
                     targetNav = new NavVector(target.position);
 
                     if (startNav != targetNav)

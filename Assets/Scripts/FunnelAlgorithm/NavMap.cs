@@ -154,6 +154,7 @@ namespace FunnelAlgorithm
             var area1 = areaArr[startAreaID];
             var area2 = areaArr[targetAreaID];
             var areas = CalAStarPolyPath(area1, area2);
+            ResetAStarData();
             //Todo: calculate conner list
             var connerLst = new List<NavVector>();
             return connerLst;
