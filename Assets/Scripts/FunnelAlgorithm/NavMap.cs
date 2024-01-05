@@ -14,7 +14,7 @@ namespace FunnelAlgorithm
         public static Action<NavVector, int> showAreaIDHandle;
         public static Action<List<NavArea>> showPathAreaHandle;
         public static Action<List<NavVector>> showConnerViewHandle;
-        
+
         private Dictionary<string, NavBorder> borderList = new Dictionary<string, NavBorder>();
         private Dictionary<string, NavBorder> areaList = new Dictionary<string, NavBorder>();
 
@@ -28,10 +28,10 @@ namespace FunnelAlgorithm
             for (int i = 0; i < count; i++)
             {
                 areaArr[i] = new NavArea(i, indexList[i], pointsArr);
-                showAreaIDHandle?.Invoke(areaArr[i].center,i);
+                showAreaIDHandle?.Invoke(areaArr[i].center, i);
             }
         }
-        
+
         public void SetBorderList()
         {
             for (int areaID = 0; areaID < indexList.Count; areaID++)
@@ -41,7 +41,7 @@ namespace FunnelAlgorithm
                 {
                     var startIndex = indexArr[verticeIndex];
                     var endIndex = 0;
-                    if (verticeIndex < indexArr.Length-1)
+                    if (verticeIndex < indexArr.Length - 1)
                     {
                         endIndex = indexArr[verticeIndex + 1];
                     }
@@ -49,7 +49,7 @@ namespace FunnelAlgorithm
                     {
                         endIndex = indexArr[0];
                     }
-                
+
                     //make index in increasing order
                     string key = "";
                     if (startIndex < endIndex)
@@ -74,7 +74,8 @@ namespace FunnelAlgorithm
                         {
                             areaKey = $"{navBorder.areaID2}-{navBorder.areaID1}";
                         }
-                        areaList.Add(areaKey,navBorder);
+
+                        areaList.Add(areaKey, navBorder);
                     }
                     else
                     {
@@ -84,7 +85,7 @@ namespace FunnelAlgorithm
                             pointIndex1 = startIndex,
                             pointIndex2 = endIndex
                         };
-                        borderList.Add(key,navBorder);
+                        borderList.Add(key, navBorder);
                     }
                 }
             }
@@ -92,7 +93,7 @@ namespace FunnelAlgorithm
             List<string> singles = new List<string>();
             foreach (var navBorder in borderList)
             {
-                if (navBorder.Value.isShare==false)
+                if (navBorder.Value.isShare == false)
                 {
                     singles.Add(navBorder.Key);
                 }
@@ -115,7 +116,7 @@ namespace FunnelAlgorithm
             List<NavBorder> list = new List<NavBorder>();
             foreach (var border in borderList)
             {
-                if (border.Value.areaID1==areaID || border.Value.areaID2==areaID)
+                if (border.Value.areaID1 == areaID || border.Value.areaID2 == areaID)
                 {
                     list.Add(border.Value);
                 }
@@ -123,7 +124,7 @@ namespace FunnelAlgorithm
 
             return list;
         }
-        
+
         private NavBorder GetBorderByAreaIDKey(string key)
         {
             return areaList.TryGetValue(key, out NavBorder border) ? border : null;
@@ -134,15 +135,15 @@ namespace FunnelAlgorithm
             var startAreaID = GetNavAreaID(start);
             var targetAreaID = GetNavAreaID(end);
 
-            if (startAreaID!= -1)
+            if (startAreaID != -1)
                 Debug.Log($"startAreaID:{startAreaID}");
             else
             {
                 Debug.LogError("no such Area");
                 return null;
             }
-            
-            if(targetAreaID!=-1)
+
+            if (targetAreaID != -1)
                 Debug.Log($"targetAreaID:{targetAreaID}");
             else
             {
@@ -158,9 +159,47 @@ namespace FunnelAlgorithm
             return connerLst;
         }
 
+        public bool IsInArea(NavVector point, int areaID)
+        {
+            if (areaID > areaArr.Length) return false;
+            var area = areaArr[areaID];
+            if (point.x < area.min.x || point.x > area.max.x || point.z < area.min.z || point.z > area.max.z)
+                return false;
+            var count = area.indexArr.Length;
+            var isIN = false;
+            for (int i = 0, j = count - 1; i < count; j = i++)
+            {
+                var p0 = pointsArr[area.indexArr[j]];
+                var p1 = pointsArr[area.indexArr[i]];
+                if (NavVector.IsSegment(p0,p1,point))
+                {
+                    return true;
+                }
+                //PNPoly
+                //website: https://wrfranklin.org/Research/Short_Notes/pnpoly.html
+                if((p0.z<point.z)!=(p1.z<point.z) && point.x<(p1.x-p0.x)*(point.z-p0.z)+p0.x)
+                {
+                    isIN = !isIN;
+                }
+            }
+
+            return isIN;
+        }
+
         private int GetNavAreaID(NavVector pos)
         {
-            return -1;
+            var areaID = -1;
+            foreach (var area in areaArr)
+            {
+                var checkID = area.areaID;
+                if (IsInArea(pos, checkID))
+                {
+                    areaID = checkID;
+                    break;
+                }
+            }
+
+            return areaID;
         }
     }
 }

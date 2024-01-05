@@ -10,8 +10,8 @@ namespace FunnelAlgorithm
         public readonly int areaID;
         public NavBorder targetBorder;
         public NavVector center = NavVector.Zero;
-        private NavVector min = new NavVector(float.MaxValue, float.MaxValue, float.MaxValue);
-        private NavVector max = new NavVector(float.MinValue, float.MinValue, float.MinValue);
+        public NavVector min = new NavVector(float.MaxValue, float.MaxValue, float.MaxValue);
+        public NavVector max = new NavVector(float.MinValue, float.MinValue, float.MinValue);
         public List<NavBorder> borderList;
         
         //A Star
