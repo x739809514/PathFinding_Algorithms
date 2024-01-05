@@ -5,6 +5,8 @@ namespace FunnelAlgorithm
 {
     public partial class NavMap
     {
+#region AStar
+
         private NavArea startArea;
         private NavArea endArea;
 
@@ -118,5 +120,33 @@ namespace FunnelAlgorithm
                 lst[i].Reset();
             }
         }
+
+#endregion
+
+
+#region Funnel
+        /// <summary>
+        /// 拐点数据
+        /// </summary>
+        private List<NavVector> posLst = null;
+        /// <summary>
+        /// 漏斗顶点
+        /// </summary>
+        private NavVector funnelPos = NavVector.Zero;
+
+        private List<NavVector> CalFunnelConnerPath(List<NavArea> areaLst,NavVector start, NavVector end)
+        {
+            posLst = new List<NavVector>(){start};
+
+            return posLst;
+        }
+
+        //Todo:
+        public void ResetFunnelArea()
+        {
+            
+        }
+#endregion
+
     }
 }
