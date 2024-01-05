@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Timeline.Actions;
+using UnityEngine;
 
 namespace FunnelAlgorithm
 {
@@ -12,6 +13,7 @@ namespace FunnelAlgorithm
         private NavArea[] areaArr;
         public static Action<NavVector, int> showAreaIDHandle;
         public static Action<List<NavArea>> showPathAreaHandle;
+        public static Action<List<NavVector>> showConnerViewHandle;
         
         private Dictionary<string, NavBorder> borderList = new Dictionary<string, NavBorder>();
         private Dictionary<string, NavBorder> areaList = new Dictionary<string, NavBorder>();
@@ -122,13 +124,43 @@ namespace FunnelAlgorithm
             return list;
         }
         
-        NavBorder GetBorderByAreaIDKey(string key) {
-            if(areaList.TryGetValue(key, out NavBorder border)) {
-                return border;
-            }
-            else {
+        private NavBorder GetBorderByAreaIDKey(string key)
+        {
+            return areaList.TryGetValue(key, out NavBorder border) ? border : null;
+        }
+
+        public List<NavVector> CalNavPath(NavVector start, NavVector end)
+        {
+            var startAreaID = GetNavAreaID(start);
+            var targetAreaID = GetNavAreaID(end);
+
+            if (startAreaID!= -1)
+                Debug.Log($"startAreaID:{startAreaID}");
+            else
+            {
+                Debug.LogError("no such Area");
                 return null;
             }
+            
+            if(targetAreaID!=-1)
+                Debug.Log($"targetAreaID:{targetAreaID}");
+            else
+            {
+                Debug.LogError("no such Area");
+                return null;
+            }
+
+            var area1 = areaArr[startAreaID];
+            var area2 = areaArr[targetAreaID];
+            var areas = CalAStarPolyPath(area1, area2);
+            //Todo: calculate conner list
+            var connerLst = new List<NavVector>();
+            return connerLst;
+        }
+
+        private int GetNavAreaID(NavVector pos)
+        {
+            return -1;
         }
     }
 }

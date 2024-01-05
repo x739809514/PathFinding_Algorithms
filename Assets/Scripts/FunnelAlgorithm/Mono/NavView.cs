@@ -41,6 +41,26 @@ namespace FunnelAlgorithm
             }
         }
 
+        public void ShowConnerView(List<NavVector> connerList)
+        {
+            if (connerList.Count > 0)
+            {
+                NavVector v1, v2;
+                v1 = connerList[0];
+                for (int i = 1; i < connerList.Count; i++)
+                {
+                    v2 = connerList[i];
+                    DebugDrawLine(v1,v2,Color.red,5);
+                    v1 = v2;
+                }
+                
+                string info = "";
+                for(int k = 0; k < connerList.Count; k++) {
+                    info += $"{connerList[k]}";
+                }
+            }
+        }
+
         public static void DebugDrawLine(NavVector v1, NavVector v2, Color color, float time = float.MaxValue)
         {
             Debug.DrawLine(v1.ConvertToUnityVector(),v2.ConvertToUnityVector(),color,time);

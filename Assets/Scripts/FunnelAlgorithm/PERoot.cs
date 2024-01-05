@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using FunnelAlgorithm;
 using PEUtils;
+using Unity.VisualScripting;
 using UnityEngine;
+using Update = UnityEngine.PlayerLoop.Update;
 using Vector3 = UnityEngine.Vector3;
 
 public class PERoot : MonoBehaviour
@@ -12,7 +14,11 @@ public class PERoot : MonoBehaviour
     private List<int[]> indexList;
     private NavArea navArea;
     private NavMap navMap;
-   
+
+    public NavVector startNav;
+    public NavVector targetNav;
+    public bool canMouseClick;
+
     void Start()
     {
         PELog.InitSettings(LoggerType.Unity);
@@ -21,10 +27,11 @@ public class PERoot : MonoBehaviour
 
         var navView = transform.GetComponent<NavView>();
         navView.pointsArr = pointsArr;
-        if (navView!=null)
+        if (navView != null)
         {
             NavMap.showAreaIDHandle += navView.ShowAreaID;
             NavMap.showPathAreaHandle += navView.ShowPathAreas;
+            NavMap.showConnerViewHandle += navView.ShowConnerView;
         }
 
         navMap = new NavMap(indexList, pointsArr);
@@ -59,6 +66,36 @@ public class PERoot : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 1000))
+            {
+                if (canMouseClick)
+                {
+                    var start = GameObject.FindGameObjectWithTag("Start").transform;
+                    start.position = hit.transform.position;
+                    startNav = new NavVector(start.position);
+                }
+            }
+        }
+        
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 1000))
+            {
+                if (canMouseClick)
+                {
+                    var target = GameObject.FindGameObjectWithTag("Start").transform;
+                    target.position = hit.transform.position;
+                    targetNav = new NavVector(target.position);
+
+                    if (startNav != targetNav)
+                    {
+                        navMap.CalNavPath(startNav, targetNav);
+                    }
+                }
+            }
+        }
     }
 
     private void InitNavConfig()

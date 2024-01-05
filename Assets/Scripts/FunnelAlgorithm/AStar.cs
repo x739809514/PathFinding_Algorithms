@@ -8,33 +8,33 @@ namespace FunnelAlgorithm
         private NavArea startArea;
         private NavArea endArea;
 
-        private readonly PriorityQueue<NavArea> detectQue = new PriorityQueue<NavArea>(4);
-        private readonly List<NavArea> finishLst = new List<NavArea>();
+        private readonly PriorityQueue<NavArea> openList = new PriorityQueue<NavArea>(4);
+        private readonly List<NavArea> closeList = new List<NavArea>();
         private List<NavArea> pathList = new List<NavArea>();
 
         public List<NavArea> CalAStarPolyPath(NavArea start, NavArea end)
         {
             startArea = start;
             endArea = end;
-            detectQue.Clear();
-            finishLst.Clear();
+            openList.Clear();
+            closeList.Clear();
             
-            detectQue.Enqueue(start);
+            openList.Enqueue(start);
             startArea.sumDistance = 0;
-            while (detectQue.Count>0)
+            while (openList.Count>0)
             {
-                if (detectQue.Contains(end))
+                if (openList.Contains(end))
                 {
                     pathList = GetPathNavAreas(end);
                     showPathAreaHandle?.Invoke(pathList);
-                    finishLst.Add(end);
+                    closeList.Add(end);
                     break;
                 }
 
-                NavArea detectArea = detectQue.Dequeue();
-                if (!finishLst.Contains(detectArea))
+                NavArea detectArea = openList.Dequeue();
+                if (!closeList.Contains(detectArea))
                 {
-                    finishLst.Add(detectArea);
+                    closeList.Add(detectArea);
                 }
                 //detect neighbour areas
                 for (int i = 0; i < detectArea.borderList.Count; i++)
@@ -56,7 +56,7 @@ namespace FunnelAlgorithm
         /// <param name="neighbourArea"></param>
         private void DetectNeighbourArea(NavArea detectArea, NavArea neighbourArea)
         {
-            if (!finishLst.Contains(neighbourArea))
+            if (!closeList.Contains(neighbourArea))
             {
                 float neighborDistance = detectArea.CalNavAreaDis(neighbourArea);
                 float newSumDistance = detectArea.sumDistance + neighborDistance;
@@ -67,11 +67,11 @@ namespace FunnelAlgorithm
                     neighbourArea.sumDistance = newSumDistance;
                 }
                 //if this is a new area
-                if (!detectQue.Contains(neighbourArea))
+                if (!openList.Contains(neighbourArea))
                 {
                     float targetDistance = neighbourArea.CalNavAreaDis(endArea); //cal H
-                    neighborDistance = neighbourArea.sumDistance + targetDistance; //f = g + h
-                    detectQue.Enqueue(neighbourArea);
+                    neighbourArea.weight = neighbourArea.sumDistance + targetDistance; //f = g + h
+                    openList.Enqueue(neighbourArea);
                 }
             }
         }
@@ -109,11 +109,11 @@ namespace FunnelAlgorithm
         }
         
         void ResetAStarData() {
-            for(int i = 0; i < finishLst.Count; i++) {
-                finishLst[i].Reset();
+            for(int i = 0; i < closeList.Count; i++) {
+                closeList[i].Reset();
             }
 
-            List<NavArea> lst = detectQue.ToList();
+            List<NavArea> lst = openList.ToList();
             for(int i = 0; i < lst.Count; i++) {
                 lst[i].Reset();
             }
