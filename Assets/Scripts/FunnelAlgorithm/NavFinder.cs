@@ -134,13 +134,33 @@ namespace FunnelAlgorithm
         /// 漏斗顶点
         /// </summary>
         private NavVector funnelPos = NavVector.Zero;
-
+        /// <summary>
+        /// 当前左侧节点
+        /// </summary>
         private int curLeftIndex = -1;
+        /// <summary>
+        /// 当前右侧节点
+        /// </summary>
         private int curRightIndex = -1;
+        /// <summary>
+        /// 左极限缓存
+        /// </summary>
         private int leftLimitIndex = -1;
+        /// <summary>
+        /// 右极限缓存
+        /// </summary>
         private int rightLimitIndex = -1;
+        /// <summary>
+        /// 左极限向量
+        /// </summary>
         private NavVector leftLimitDir=NavVector.Zero;
+        /// <summary>
+        /// 右极限向量
+        /// </summary>
         private NavVector rightLimitDir = NavVector.Zero;
+        /// <summary>
+        /// 左右监测点和检测向量
+        /// </summary>
         private int leftCheckIndex = -1;
         private int rightCheckIndex = -1;
         private NavVector leftCheckDir=NavVector.Zero;
