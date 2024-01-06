@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FunnelAlgorithm.Utility;
+using UnityEngine;
 
 namespace FunnelAlgorithm
 {
@@ -134,13 +135,100 @@ namespace FunnelAlgorithm
         /// </summary>
         private NavVector funnelPos = NavVector.Zero;
 
+        private int curLeftIndex = -1;
+        private int curRightIndex = -1;
+        private int leftLimitIndex = -1;
+        private int rightLimitIndex = -1;
+        private NavVector leftLimitDir=NavVector.Zero;
+        private NavVector rightLimitDir = NavVector.Zero;
+        private int leftCheckIndex = -1;
+        private int rightCheckIndex = -1;
+        private NavVector leftCheckDir=NavVector.Zero;
+        private NavVector rightCheckDir=NavVector.Zero;
+
         private List<NavVector> CalFunnelConnerPath(List<NavArea> areaLst,NavVector start, NavVector end)
         {
             posLst = new List<NavVector>(){start};
-
+            funnelPos = start;
+            var initAreaIndex = GetNextAreaID(areaLst);
+            if (initAreaIndex==-1)
+            {
+                posLst.Add(end);
+                return posLst;
+            }
+            this.LogCyan($"InitAreaID:{initAreaIndex}");
+            FunnelShirkEnum leftFSE, rightFSE;
+            for (int initIndex = initAreaIndex+1,count = areaLst.Count; initIndex < count; initIndex++)
+            {
+                if (initIndex == count - 1)
+                {
+                    //Todo:
+                }
+                else
+                {
+                    //Todo: 执行漏斗移动逻辑
+                    CalFunnelAction(areaLst[initIndex]);
+                }
+            }
             return posLst;
         }
 
+        private int GetNextAreaID(List<NavArea> areaLst)
+        {
+            var initAreaID = -1;
+            if (areaLst.Count==0)
+            {
+                return initAreaID;
+            }
+
+            for (int i = 0; i < areaLst.Count; i++)
+            {
+                if (IsFunnelInitArea(areaLst[i]))
+                {
+                    initAreaID = areaLst[i].areaID;
+                    break;
+                }
+            }
+            return initAreaID;
+        }
+
+        private bool IsFunnelInitArea(NavArea area)
+        {
+            if (area.targetBorder == null) return false;
+            var index1 = area.targetBorder.pointIndex1;
+            var index2 = area.targetBorder.pointIndex2;
+            var v1 = pointsArr[index1] - funnelPos;
+            var v2 = pointsArr[index2] - funnelPos;
+            NavView.DebugDrawLine(pointsArr[index1],funnelPos,Color.cyan,5);
+            NavView.DebugDrawLine(pointsArr[index2],funnelPos,Color.cyan,5);
+            float cross = NavVector.CrossXZ(v1, v2);
+            switch (cross)
+            {
+                case > 0:
+                    curLeftIndex = index2;
+                    curRightIndex = index1;
+                    leftLimitIndex = index2;
+                    rightLimitIndex = index1;
+                    leftLimitDir = v2;
+                    rightLimitDir = v1;
+                    return true;
+                case < 0:
+                    curLeftIndex = index1;
+                    curRightIndex = index2;
+                    leftLimitIndex = index1;
+                    rightLimitIndex = index2;
+                    leftLimitDir = v1;
+                    rightLimitDir = v2;
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private void CalFunnelAction(NavArea area)
+        {
+            
+        }
         //Todo:
         public void ResetFunnelArea()
         {
