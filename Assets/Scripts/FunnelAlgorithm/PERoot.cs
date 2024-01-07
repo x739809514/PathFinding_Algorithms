@@ -100,7 +100,7 @@ public class PERoot : MonoBehaviour
 
     private void InitNavConfig()
     {
-        var map = GameObject.FindWithTag("mapRoot");
+        var map = GameObject.FindGameObjectWithTag("mapRoot");
         var points = map.transform.Find("pointRoot");
         var indexs = map.transform.Find("indexRoot");
         pointsArr = new NavVector[points.childCount];

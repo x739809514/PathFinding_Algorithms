@@ -1,5 +1,6 @@
 public enum FunnelShirkEnum
 {
+    None,
     /// <summary>
     /// 左向向左
     /// </summary>

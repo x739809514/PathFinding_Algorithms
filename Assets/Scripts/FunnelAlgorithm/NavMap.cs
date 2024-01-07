@@ -180,7 +180,7 @@ namespace FunnelAlgorithm
                 }
                 //PNPoly
                 //website: https://wrfranklin.org/Research/Short_Notes/pnpoly.html
-                if((p0.z<point.z)!=(p1.z<point.z) && point.x<(p1.x-p0.x)*(point.z-p0.z)+p0.x)
+                if((p0.z<point.z)!=(p1.z<point.z) && point.x<(p1.x-p0.x)*(point.z-p0.z)/ (p1.z - p0.z)+p0.x)
                 {
                     isIN = !isIN;
                 }
