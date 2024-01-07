@@ -221,7 +221,7 @@ namespace FunnelAlgorithm
                             leftConnerLst.Clear();
                             break;
                         case FunnelShirkEnum.LeftToRight:
-                            //Todo:
+                            CalLeftToRightFunnel();
                             break;
                         default:    
                             break;
@@ -238,7 +238,7 @@ namespace FunnelAlgorithm
                             rightConnerLst.Clear();
                             break;
                         case FunnelShirkEnum.RightToLeft:
-                            //Todo:
+                            CalRightToLeftFunnel();
                             break;
                         default:    
                             break;
@@ -247,6 +247,36 @@ namespace FunnelAlgorithm
             }
 
             return posLst;
+        }
+
+        private void CalLeftToRightFunnel()
+        {
+            funnelPos = pointsArr[rightLimitIndex];
+            posLst.Add(funnelPos);
+
+            int connerIndex = 0;
+            NavVector rldn = NavVector.NormalXZ(rightLimitDir);
+            while (connerIndex<rightConnerLst.Count)
+            {
+                float rad = float.MaxValue;
+                for (int i = connerIndex; i < rightConnerLst.Count; i++)
+                {
+                    NavVector ckdn = NavVector.NormalXZ(pointsArr[rightConnerLst[i]]-funnelPos);
+                    float curRad = Mathf.Abs(NavVector.AngleXZ(rldn, ckdn));
+                    if (curRad < rad)
+                    {
+                        connerIndex = i;
+                        rad = curRad;
+                    }
+                }
+                
+                
+            }
+        }
+
+        private void CalRightToLeftFunnel()
+        {
+            throw new System.NotImplementedException();
         }
 
         private int GetNextAreaID(List<NavArea> areaLst)

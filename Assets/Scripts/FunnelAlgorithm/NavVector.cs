@@ -75,6 +75,36 @@ namespace FunnelAlgorithm
             return new Vector3(x, y, z);
         }
 
+        public static NavVector NormalXZ(NavVector vector)
+        {
+            var mag = Mathf.Sqrt(vector.x * vector.x + vector.z * vector.z);
+            var nor = new NavVector()
+            {
+                x = vector.x / mag,
+                y = 0,
+                z = vector.z / mag
+            };
+            return nor;
+        }
+        
+        public static float AngleXZ(NavVector v1, NavVector v2) {
+            float dot = DotXZ(v1, v2);
+            float angle = MathF.Acos(dot);
+            NavVector cross = CrossXYZ(v1, v2);
+            if(cross.y < 0) {
+                angle = -angle;
+            }
+            return angle;
+        }
+        
+        public static NavVector CrossXYZ(NavVector v1, NavVector v2) {
+            return new NavVector() {
+                x = v1.y * v2.z - v1.z * v2.y,
+                y = v1.z * v2.x - v1.x * v2.z,
+                z = v1.x * v2.y - v1.y * v2.x
+            };
+        }
+
         /// <summary>
         /// [x1,y1]x[x2,y2]=x1y2-x2y1
         /// </summary>
