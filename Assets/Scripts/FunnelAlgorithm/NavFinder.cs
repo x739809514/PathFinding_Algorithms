@@ -270,7 +270,28 @@ namespace FunnelAlgorithm
                     }
                 }
                 
-                
+                //update funnel limit pos
+                leftLimitIndex = leftCheckIndex;
+                leftLimitDir = pointsArr[leftLimitIndex] - funnelPos;
+                rightLimitIndex = rightConnerLst[connerIndex];
+                rightLimitDir = pointsArr[leftLimitIndex] - funnelPos;
+
+                float cross = NavVector.CrossXZ(leftLimitDir, rightLimitDir);
+                if (cross>0)
+                {
+                    funnelPos = pointsArr[rightLimitIndex];
+                    posLst.Add(funnelPos);
+                    ++connerIndex;
+                }
+                else
+                {
+                    for (int i = 0; i < connerIndex; i++)
+                    {
+                        rightConnerLst.RemoveAt(0);
+                    }
+                    break;
+                }
+
             }
         }
 
