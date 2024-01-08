@@ -35,11 +35,11 @@ namespace FunnelAlgorithm
                 if (max.x < v.x) max.x = v.x;
                 if (max.y < v.y) max.y = v.y;
                 if (max.z < v.z) max.z = v.z;
-
+ 
                 center += v;
             }
 
-            center = new NavVector(center.x / 4, center.y / 4, center.z / 4);
+            center = new NavVector(center.x / indexArr.Length, center.y / indexArr.Length, center.z / indexArr.Length);
         }
         
         /// <summary>

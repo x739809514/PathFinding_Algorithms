@@ -59,6 +59,7 @@
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavMap.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\Utility\Enums.cs" />
      <Folder Include="Assets" />
+     <Folder Include="Assets\Resources\Prefabs\maps" />
      <Folder Include="Assets\Resources\LowMan\Models" />
      <Folder Include="Assets\Scripts\FunnelAlgorithm\Utility" />
      <Folder Include="Assets\Scenes\Example03" />
