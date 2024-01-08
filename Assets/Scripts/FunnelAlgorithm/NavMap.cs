@@ -9,17 +9,17 @@ namespace FunnelAlgorithm
     public partial class NavMap
     {
         private readonly List<int[]> indexList;
-        private readonly NavVector[] pointsArr;
+        private readonly NavVector3[] pointsArr;
         private NavArea[] areaArr;
-        public static Action<NavVector, int> showAreaIDHandle;
+        public static Action<NavVector3, int> showAreaIDHandle;
         public static Action<List<NavArea>> showPathAreaHandle;
-        public static Action<List<NavVector>> showConnerViewHandle;
+        public static Action<List<NavVector3>> showConnerViewHandle;
 
         private Dictionary<string, NavBorder> borderList = new Dictionary<string, NavBorder>();
         private Dictionary<string, NavBorder> areaList = new Dictionary<string, NavBorder>();
 
 
-        public NavMap(List<int[]> indexList, NavVector[] pointsArr)
+        public NavMap(List<int[]> indexList, NavVector3[] pointsArr)
         {
             this.indexList = indexList;
             this.pointsArr = pointsArr;
@@ -130,7 +130,7 @@ namespace FunnelAlgorithm
             return areaList.TryGetValue(key, out NavBorder border) ? border : null;
         }
 
-        public List<NavVector> CalNavPath(NavVector start, NavVector end)
+        public List<NavVector3> CalNavPath(NavVector3 start, NavVector3 end)
         {
             var startAreaID = GetNavAreaID(start);
             var targetAreaID = GetNavAreaID(end);
@@ -162,7 +162,16 @@ namespace FunnelAlgorithm
             return connerLst;
         }
 
-        public bool IsInArea(NavVector point, int areaID)
+        
+        bool OnXZSegment(NavVector3 p1, NavVector3 p2, NavVector3 p) {
+            NavVector3 v1 = p1 - p;
+            NavVector3 v2 = p2 - p;
+            bool isCollineation = NavVector3.CrossXZ(v1, v2) == 0;
+            bool isNoPrjLen = NavVector3.DotXZ(v1, v2) <= 0;
+            return isCollineation && isNoPrjLen;
+        }
+        
+        public bool IsInArea(NavVector3 point, int areaID)
         {
             if (areaID > areaArr.Length) return false;
             var area = areaArr[areaID];
@@ -174,7 +183,7 @@ namespace FunnelAlgorithm
             {
                 var p0 = pointsArr[area.indexArr[j]];
                 var p1 = pointsArr[area.indexArr[i]];
-                if (NavVector.IsSegment(p0,p1,point))
+                if (OnXZSegment(p0,p1,point))
                 {
                     return true;
                 }
@@ -189,7 +198,7 @@ namespace FunnelAlgorithm
             return isIN;
         }
 
-        private int GetNavAreaID(NavVector pos)
+        private int GetNavAreaID(NavVector3 pos)
         {
             var areaID = -1;
             foreach (var area in areaArr)

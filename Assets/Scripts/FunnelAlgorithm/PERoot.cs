@@ -10,13 +10,13 @@ public class PERoot : MonoBehaviour
 {
     public Color wireColor;
     private NavConfig config;
-    private NavVector[] pointsArr;
-    private List<int[]> indexList;
+    //private NavVector[] pointsArr;
+    //private List<int[]> indexList;
     private NavArea navArea;
     private NavMap navMap;
 
-    public NavVector startNav;
-    public NavVector targetNav;
+    public NavVector3 startNav;
+    public NavVector3 targetNav;
     public bool canMouseClick;
 
     void Start()
@@ -26,15 +26,16 @@ public class PERoot : MonoBehaviour
         InitNavConfig();
 
         var navView = transform.GetComponent<NavView>();
-        navView.pointsArr = pointsArr;
+        
         if (navView != null)
         {
+            navView.pointsArr = config.navVectors;
             NavMap.showAreaIDHandle += navView.ShowAreaID;
             NavMap.showPathAreaHandle += navView.ShowPathAreas;
             NavMap.showConnerViewHandle += navView.ShowConnerView;
         }
 
-        navMap = new NavMap(indexList, pointsArr);
+        navMap = new NavMap(config.indexList, config.navVectors);
         navMap.SetBorderList();
     }
 
@@ -74,7 +75,7 @@ public class PERoot : MonoBehaviour
                 {
                     var start = GameObject.FindGameObjectWithTag("Start").transform;
                     start.position = hit.point;
-                    startNav = new NavVector(start.position);
+                    startNav = new NavVector3(start.position);
                 }
             }
         }
@@ -87,7 +88,7 @@ public class PERoot : MonoBehaviour
                 {
                     var target = GameObject.FindGameObjectWithTag("Target").transform;
                     target.position = hit.point;
-                    targetNav = new NavVector(target.position);
+                    targetNav = new NavVector3(target.position);
 
                     if (startNav != targetNav)
                     {
@@ -101,19 +102,23 @@ public class PERoot : MonoBehaviour
     private void InitNavConfig()
     {
         var map = GameObject.FindGameObjectWithTag("mapRoot");
+        if (map==null)
+        {
+            return;
+        }
         var points = map.transform.Find("pointRoot");
         var indexs = map.transform.Find("indexRoot");
-        pointsArr = new NavVector[points.childCount];
-        indexList = new List<int[]>();
+        
         config = new NavConfig()
         {
             indexList = new List<int[]>(),
-            navVectors = new NavVector[points.childCount]
+            navVectors = new NavVector3[points.childCount]
         };
 
+        NavVector3[] pointsArr = new NavVector3[points.childCount];
         for (int i = 0; i < points.childCount; i++)
         {
-            pointsArr[i] = new NavVector(points.GetChild(i).transform.position);
+            pointsArr[i] = new NavVector3(points.GetChild(i).transform.position);
         }
 
         config.navVectors = pointsArr;
@@ -126,9 +131,7 @@ public class PERoot : MonoBehaviour
                 indexsArr[j] = int.Parse(VerticeArr[j]);
             }
 
-            indexList.Add(indexsArr);
+            config.indexList.Add(indexsArr);
         }
-
-        config.indexList = indexList;
     }
 }

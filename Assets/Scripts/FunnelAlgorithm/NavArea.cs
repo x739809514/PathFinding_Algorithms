@@ -6,21 +6,21 @@ namespace FunnelAlgorithm
     public class NavArea : IComparable<NavArea>
     {
         public readonly int[] indexArr;
-        private readonly NavVector[] pointsArr;
+        private readonly NavVector3[] pointsArr;
         public readonly int areaID;
         public NavBorder targetBorder;
-        public NavVector center = NavVector.Zero;
-        public NavVector min = new NavVector(float.MaxValue, float.MaxValue, float.MaxValue);
-        public NavVector max = new NavVector(float.MinValue, float.MinValue, float.MinValue);
+        public NavVector3 center = NavVector3.Zero;
+        public NavVector3 min = new NavVector3(float.MaxValue, float.MaxValue, float.MaxValue);
+        public NavVector3 max = new NavVector3(float.MinValue, float.MinValue, float.MinValue);
         public List<NavBorder> borderList;
         
         //A Star
-        private NavVector start = NavVector.Zero;
+        private NavVector3 start = NavVector3.Zero;
         public float weight;
         public float sumDistance = float.PositiveInfinity;
         public NavArea preArea;
 
-        public NavArea(int id, int[] indexes, NavVector[] points)
+        public NavArea(int id, int[] indexes, NavVector3[] points)
         {
             areaID = id;
             indexArr = indexes;
@@ -39,7 +39,7 @@ namespace FunnelAlgorithm
                 center += v;
             }
 
-            center = new NavVector(center.x / indexArr.Length, center.y / indexArr.Length, center.z / indexArr.Length);
+            center = new NavVector3(center.x / indexArr.Length, center.y / indexArr.Length, center.z / indexArr.Length);
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace FunnelAlgorithm
         /// <returns></returns>
         public float CalNavAreaDisCenter(NavArea neighbour)
         {
-            return NavVector.Distance(center, neighbour.center);
+            return NavVector3.Distance(center, neighbour.center);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace FunnelAlgorithm
             for (int i = 0; i < indexes.Length; i++)
             {
                 var v = pointsArr[indexes[i]];
-                var dis = NavVector.Distance(start, v);
+                var dis = NavVector3.Distance(start, v);
                 if (minDis > dis)
                 {
                     minDis = dis;
@@ -93,7 +93,7 @@ namespace FunnelAlgorithm
         
         public void Reset() {
             targetBorder = null;
-            start = NavVector.Zero;
+            start = NavVector3.Zero;
             weight = 0;
             sumDistance = float.PositiveInfinity;
             preArea = null;

@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavArea.cs" />
-     <Compile Include="Assets\Scripts\FunnelAlgorithm\NavVector.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavConfig.cs" />
      <Compile Include="Assets\Scripts\NavMesh\ObsticalController.cs" />
      <Compile Include="Assets\Resources\LowMan\Scripts\ThirdPersonCharacter.cs" />
@@ -55,6 +54,7 @@
      <Compile Include="Assets\Scripts\FunnelAlgorithm\Utility\PriorityQueue.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavBorder.cs" />
      <Compile Include="Assets\Scripts\NavMesh\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\FunnelAlgorithm\NavVector3.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\PERoot.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\NavMap.cs" />
      <Compile Include="Assets\Scripts\FunnelAlgorithm\Utility\Enums.cs" />

@@ -8,9 +8,9 @@ namespace FunnelAlgorithm
     public class NavView : MonoBehaviour
     {
         public Transform areaIDTrans;
-        public NavVector[] pointsArr;
+        public NavVector3[] pointsArr;
         
-        public void ShowAreaID(NavVector pos, int areaID)
+        public void ShowAreaID(NavVector3 pos, int areaID)
         {
             var go = new GameObject { name = $"areaID{areaID}" };
             go.transform.SetParent(areaIDTrans);
@@ -41,11 +41,11 @@ namespace FunnelAlgorithm
             }
         }
 
-        public void ShowConnerView(List<NavVector> connerList)
+        public void ShowConnerView(List<NavVector3> connerList)
         {
             if (connerList.Count > 0)
             {
-                NavVector v1, v2;
+                NavVector3 v1, v2;
                 v1 = connerList[0];
                 for (int i = 1; i < connerList.Count; i++)
                 {
@@ -61,7 +61,7 @@ namespace FunnelAlgorithm
             }
         }
 
-        public static void DebugDrawLine(NavVector v1, NavVector v2, Color color, float time = float.MaxValue)
+        public static void DebugDrawLine(NavVector3 v1, NavVector3 v2, Color color, float time = float.MaxValue)
         {
             Debug.DrawLine(v1.ConvertToUnityVector(),v2.ConvertToUnityVector(),color,time);
         }

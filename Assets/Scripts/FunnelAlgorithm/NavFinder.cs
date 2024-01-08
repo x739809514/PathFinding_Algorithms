@@ -18,8 +18,8 @@ namespace FunnelAlgorithm
         private readonly PriorityQueue<NavArea> openList = new PriorityQueue<NavArea>(4);
         private readonly List<NavArea> closeList = new List<NavArea>();
         private List<NavArea> pathList = new List<NavArea>();
-        private List<int> leftConnerLst = new List<int>();
-        private List<int> rightConnerLst = new List<int>();
+        /*private List<int> leftConnerLst = new List<int>();
+        private List<int> rightConnerLst = new List<int>();*/
 
         public List<NavArea> CalAStarPolyPath(NavArea start, NavArea end)
         {
@@ -115,6 +115,7 @@ namespace FunnelAlgorithm
                 }
 
                 list[i].targetBorder = GetBorderByAreaIDKey(key);
+                //this.LogGreen($"{list[i].targetBorder.pointIndex1}---{list[i].targetBorder.pointIndex2}");
             }
 
             return list;
@@ -141,11 +142,11 @@ namespace FunnelAlgorithm
         /// <summary>
         /// 拐点数据
         /// </summary>
-        private List<NavVector> posLst = null;
+        private List<NavVector3> posLst = null;
         /// <summary>
         /// 漏斗顶点
         /// </summary>
-        private NavVector funnelPos = NavVector.Zero;
+        private NavVector3 funnelPos = NavVector3.Zero;
         /// <summary>
         /// 当前左侧节点
         /// </summary>
@@ -165,22 +166,24 @@ namespace FunnelAlgorithm
         /// <summary>
         /// 左极限向量
         /// </summary>
-        private NavVector leftLimitDir = NavVector.Zero;
+        private NavVector3 leftLimitDir = NavVector3.Zero;
         /// <summary>
         /// 右极限向量
         /// </summary>
-        private NavVector rightLimitDir = NavVector.Zero;
+        private NavVector3 rightLimitDir = NavVector3.Zero;
         /// <summary>
         /// 左右监测点和检测向量
         /// </summary>
         private int leftCheckIndex = -1;
         private int rightCheckIndex = -1;
-        private NavVector leftCheckDir = NavVector.Zero;
-        private NavVector rightCheckDir = NavVector.Zero;
+        private NavVector3 leftCheckDir = NavVector3.Zero;
+        private NavVector3 rightCheckDir = NavVector3.Zero;
+        readonly List<int> leftConnerLst = new List<int>();
+        readonly List<int> rightConnerLst = new List<int>();
 
-        private List<NavVector> CalFunnelConnerPath(List<NavArea> areaLst, NavVector start, NavVector end)
+        private List<NavVector3> CalFunnelConnerPath(List<NavArea> areaLst, NavVector3 start, NavVector3 end)
         {
-            posLst = new List<NavVector>() { start };
+            posLst = new List<NavVector3>() { start };
             funnelPos = start;
             var initAreaIndex = GetInitAreaIndex(areaLst);
             if (initAreaIndex == -1)
@@ -195,7 +198,18 @@ namespace FunnelAlgorithm
             {
                 if (initIndex == count - 1)
                 {
-                    //Todo:
+                    //直到最后一个节点
+                    NavVector3 endVector = end - funnelPos;
+                    leftCheckDir = endVector;
+                    rightCheckDir = endVector;
+                    bool inLeft = NavVector3.CrossXZ(leftLimitDir, endVector)>0;
+                    bool inRight = NavVector3.CrossXZ(rightLimitDir, endVector) < 0;
+                    if(inLeft)
+                        CalcEndConner(leftConnerLst,leftLimitIndex,leftLimitDir,end);
+                    else if (inRight)
+                        CalcEndConner(rightConnerLst, rightLimitIndex, rightLimitDir, end);
+                    else
+                        posLst.Add(end);
                 }
                 else
                 {
@@ -222,7 +236,7 @@ namespace FunnelAlgorithm
                             leftConnerLst.Clear();
                             break;
                         case FunnelShirkEnum.LeftToRight:
-                            this.LogGreen($"{areaLst[initIndex].targetBorder.pointIndex1}___{areaLst[initIndex].targetBorder.pointIndex2}");
+                            //this.LogGreen($"{areaLst[initIndex].targetBorder.pointIndex1}___{areaLst[initIndex].targetBorder.pointIndex2}");
                             CalLeftToRightFunnel();
                             break;
                         default:    
@@ -245,6 +259,9 @@ namespace FunnelAlgorithm
                         default:    
                             break;
                     }
+
+                    curLeftIndex = leftCheckIndex;
+                    curRightIndex = rightCheckIndex;
                 }
             }
 
@@ -258,14 +275,14 @@ namespace FunnelAlgorithm
 
             var updateLimit = false;
             int connerIndex = 0;
-            NavVector rldn = NavVector.NormalXZ(rightLimitDir);
+            NavVector3 rldn = NavVector3.NormalXZ(rightLimitDir);
             while (connerIndex<rightConnerLst.Count)
             {
                 float rad = float.MaxValue;
                 for (int i = connerIndex; i < rightConnerLst.Count; i++)
                 {
-                    NavVector ckdn = NavVector.NormalXZ(pointsArr[rightConnerLst[i]]-funnelPos);
-                    float curRad = Mathf.Abs(NavVector.AngleXZ(rldn, ckdn));
+                    NavVector3 ckdn = NavVector3.NormalXZ(pointsArr[rightConnerLst[i]]-funnelPos);
+                    float curRad = Mathf.Abs(NavVector3.AngleXZ(rldn, ckdn));
                     if (curRad < rad)
                     {
                         connerIndex = i;
@@ -278,9 +295,9 @@ namespace FunnelAlgorithm
                 leftLimitIndex = leftCheckIndex;
                 leftLimitDir = pointsArr[leftLimitIndex] - funnelPos;
                 rightLimitIndex = rightConnerLst[connerIndex];
-                rightLimitDir = pointsArr[leftLimitIndex] - funnelPos;
+                rightLimitDir = pointsArr[rightLimitIndex] - funnelPos;
 
-                float cross = NavVector.CrossXZ(leftLimitDir, rightLimitDir);
+                float cross = NavVector3.CrossXZ(leftLimitDir, rightLimitDir);
                 if (cross>0)
                 {
                     funnelPos = pointsArr[rightLimitIndex];
@@ -289,7 +306,7 @@ namespace FunnelAlgorithm
                     if (connerIndex >= rightConnerLst.Count)
                     {
                         rightLimitIndex = -1;
-                        rightCheckDir = NavVector.Zero;
+                        rightLimitDir = NavVector3.Zero;
 
                         leftLimitDir = pointsArr[leftLimitIndex] - funnelPos;
                     }
@@ -308,12 +325,11 @@ namespace FunnelAlgorithm
             if (updateLimit==false)
             {
                 rightLimitIndex = -1;
-                rightCheckDir = NavVector.Zero;
+                rightLimitDir = NavVector3.Zero;
                 leftLimitIndex = leftCheckIndex;
                 leftLimitDir = pointsArr[leftLimitIndex] - funnelPos;
             }
         }
-
         private void CalRightToLeftFunnel()
         {
            funnelPos = pointsArr[leftLimitIndex];
@@ -321,12 +337,12 @@ namespace FunnelAlgorithm
 
             bool updateLimit = false;
             int connerIndex = 0;
-            NavVector lldn = NavVector.NormalXZ(leftLimitDir);
+            NavVector3 lldn = NavVector3.NormalXZ(leftLimitDir);
             while(connerIndex < leftConnerLst.Count) {
                 float rad = float.MaxValue;
                 for(int i = connerIndex; i < leftConnerLst.Count; i++) {
-                    NavVector ckdn = NavVector.NormalXZ(pointsArr[leftConnerLst[i]] - funnelPos);
-                    float curRad = MathF.Abs(NavVector.AngleXZ(lldn, ckdn));
+                    NavVector3 ckdn = NavVector3.NormalXZ(pointsArr[leftConnerLst[i]] - funnelPos);
+                    float curRad = MathF.Abs(NavVector3.AngleXZ(lldn, ckdn));
                     if(curRad <= rad) {
                         connerIndex = i;
                         rad = curRad;
@@ -339,14 +355,14 @@ namespace FunnelAlgorithm
 
                 rightLimitIndex = rightCheckIndex;
                 rightLimitDir = pointsArr[rightLimitIndex] - funnelPos;
-                float cross = NavVector.CrossXZ(leftLimitDir, rightLimitDir);
+                float cross = NavVector3.CrossXZ(leftLimitDir, rightLimitDir);
                 if(cross > 0) {
                     funnelPos = pointsArr[leftLimitIndex];
                     posLst.Add(funnelPos);
                     ++connerIndex;
                     if(connerIndex >= leftConnerLst.Count) {
                         leftLimitIndex = -1;
-                        leftLimitDir = NavVector.Zero;
+                        leftLimitDir = NavVector3.Zero;
 
                         rightLimitDir = pointsArr[rightLimitIndex] - funnelPos;
                     }
@@ -361,13 +377,12 @@ namespace FunnelAlgorithm
 
             if(!updateLimit) {
                 leftLimitIndex = -1;
-                leftLimitDir = NavVector.Zero;
+                leftLimitDir = NavVector3.Zero;
 
                 rightLimitIndex = rightCheckIndex;
                 rightLimitDir = pointsArr[rightLimitIndex] - funnelPos;
             }
         }
-
         private int GetInitAreaIndex(List<NavArea> areaLst)
         {
             var initAreaIndex = -1;
@@ -392,9 +407,10 @@ namespace FunnelAlgorithm
             if (area.targetBorder == null) return false;
             var index1 = area.targetBorder.pointIndex1;
             var index2 = area.targetBorder.pointIndex2;
+            this.LogGreen(index1+"----"+index2);
             var v1 = pointsArr[index1] - funnelPos;
             var v2 = pointsArr[index2] - funnelPos;
-            float cross = NavVector.CrossXZ(v1, v2);
+            float cross = NavVector3.CrossXZ(v1, v2);
             switch (cross)
             {
                 case > 0:
@@ -417,6 +433,10 @@ namespace FunnelAlgorithm
                     return false;
             }
         }
+        /// <summary>
+        /// 计算漏斗边
+        /// </summary>
+        /// <param name="area"></param>
         private void CalCheckFunnel(NavArea area)
         {
             var checkIndex1 = area.targetBorder.pointIndex1;
@@ -439,7 +459,8 @@ namespace FunnelAlgorithm
 
             for (int i = 0; i < count; i++)
             {
-                if (area.indexArr[(i + offset)% count]  == checkIndex1)
+                int curIndex = area.indexArr[(i + offset) % count];
+                if (curIndex  == checkIndex1)
                 {
                     leftCheckIndex = checkIndex1;
                     rightCheckIndex = checkIndex2;
@@ -447,7 +468,7 @@ namespace FunnelAlgorithm
                     rightCheckDir = checkVector2;
                     break;
                 }
-                else if (area.indexArr[(i + offset) % count] == checkIndex2)
+                else if (curIndex == checkIndex2)
                 {
                     leftCheckIndex = checkIndex2;
                     rightCheckIndex = checkIndex1;
@@ -461,16 +482,16 @@ namespace FunnelAlgorithm
                 }
 
                 //Todo:
-                if (leftLimitDir == NavVector.Zero)
+                if (leftLimitDir == NavVector3.Zero)
                     leftLimitDir = leftCheckDir;
-                if (rightLimitDir == NavVector.Zero)
+                if (rightLimitDir == NavVector3.Zero)
                     rightLimitDir = rightCheckDir;
             }
         }
         private FunnelShirkEnum CalLeftFunnelChange()
         {
             FunnelShirkEnum funnelShirk;
-            var ll = NavVector.CrossXZ(leftLimitDir, leftCheckDir);
+            var ll = NavVector3.CrossXZ(leftLimitDir, leftCheckDir);
             if (ll > 0)
             {
                 funnelShirk = FunnelShirkEnum.LeftToLeft;
@@ -480,7 +501,7 @@ namespace FunnelAlgorithm
             }
             else
             {
-                var rl = NavVector.CrossXZ(rightLimitDir, leftCheckDir);
+                var rl = NavVector3.CrossXZ(rightLimitDir, leftCheckDir);
                 if (rl > 0)
                 {
                     funnelShirk = FunnelShirkEnum.LeftToCenter;
@@ -496,7 +517,7 @@ namespace FunnelAlgorithm
         private FunnelShirkEnum CalRightFunnelChange()
         {
             FunnelShirkEnum funnelShirk;
-            var rr = NavVector.CrossXZ(rightLimitDir, rightCheckDir);
+            var rr = NavVector3.CrossXZ(rightLimitDir, rightCheckDir);
             if (rr < 0)
             {
                 funnelShirk = FunnelShirkEnum.RightToRight;
@@ -506,25 +527,66 @@ namespace FunnelAlgorithm
             }
             else
             {
-                var lr = NavVector.CrossXZ(leftLimitDir, rightCheckDir);
+                var lr = NavVector3.CrossXZ(leftLimitDir, rightCheckDir);
                 if (lr < 0)
                 {
-                    funnelShirk = FunnelShirkEnum.LeftToCenter;
+                    funnelShirk = FunnelShirkEnum.RightToCenter;
                 }
                 else
                 {
-                    funnelShirk = FunnelShirkEnum.LeftToRight;
+                    funnelShirk = FunnelShirkEnum.RightToLeft;
                 }
             }
 
             return funnelShirk;
         }
-        
-        //Todo:
+        private void CalcEndConner(List<int> cornerIndexLst, int limitIndex, NavVector3 limitDir, NavVector3 end) {
+            funnelPos = pointsArr[limitIndex];
+            posLst.Add(funnelPos);
+            List<NavVector3> cornerPosLst = new List<NavVector3>();
+            for(int i = 0; i < cornerIndexLst.Count; i++) {
+                cornerPosLst.Add(pointsArr[cornerIndexLst[i]]);
+            }
+            bool isExist = false;
+            for(int i = 0; i < cornerPosLst.Count; i++) {
+                if(cornerPosLst[i] == end) {
+                    isExist = true;
+                    break;
+                }
+            }
+            if(!isExist) cornerPosLst.Add(end);
+
+            NavVector3 ln = NavVector3.NormalXZ(limitDir);
+            int connerIndex = 0;
+            while(connerIndex < cornerPosLst.Count) {
+                float rad = float.MaxValue;
+                for(int j = connerIndex; j < cornerPosLst.Count; j++) {
+                    NavVector3 checkVec = cornerPosLst[j] - funnelPos;
+                    NavVector3 ckn = NavVector3.NormalXZ(checkVec);
+                    float curRad = MathF.Abs(NavVector3.AngleXZ(ln, ckn));
+                    if(curRad < rad) {
+                        rad = curRad;
+                        connerIndex = j;
+                    }
+                }
+                funnelPos = cornerPosLst[connerIndex];
+                posLst.Add(funnelPos);
+                connerIndex++;
+            }
+        }
         public void ResetFunnelArea()
         {
+            curLeftIndex = -1;
+            curRightIndex = -1;
+            leftLimitIndex = -1;
+            rightLimitIndex = -1;
+            leftLimitDir = NavVector3.Zero;
+            rightLimitDir = NavVector3.Zero;
+            leftCheckIndex = -1;
+            rightCheckIndex = -1;
+            leftCheckDir = NavVector3.Zero;
+            rightCheckDir = NavVector3.Zero;
         }
-
 #endregion
     }
 }
