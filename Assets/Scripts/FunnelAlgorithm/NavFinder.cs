@@ -185,6 +185,8 @@ namespace FunnelAlgorithm
         {
             posLst = new List<NavVector3>() { start };
             funnelPos = start;
+            leftConnerLst.Clear();
+            rightConnerLst.Clear();
             var initAreaIndex = GetInitAreaIndex(areaLst);
             if (initAreaIndex == -1)
             {
@@ -283,7 +285,7 @@ namespace FunnelAlgorithm
                 {
                     NavVector3 ckdn = NavVector3.NormalXZ(pointsArr[rightConnerLst[i]]-funnelPos);
                     float curRad = Mathf.Abs(NavVector3.AngleXZ(rldn, ckdn));
-                    if (curRad < rad)
+                    if (curRad <= rad)
                     {
                         connerIndex = i;
                         rad = curRad;
@@ -480,13 +482,11 @@ namespace FunnelAlgorithm
                 {
                     Debug.Log($"loop index:{i + offset}");
                 }
-
-                //Todo:
-                if (leftLimitDir == NavVector3.Zero)
-                    leftLimitDir = leftCheckDir;
-                if (rightLimitDir == NavVector3.Zero)
-                    rightLimitDir = rightCheckDir;
             }
+            if (leftLimitDir == NavVector3.Zero)
+                leftLimitDir = leftCheckDir;
+            if (rightLimitDir == NavVector3.Zero)
+                rightLimitDir = rightCheckDir;
         }
         private FunnelShirkEnum CalLeftFunnelChange()
         {

@@ -18,6 +18,7 @@ public class PERoot : MonoBehaviour
     public NavVector3 startNav;
     public NavVector3 targetNav;
     public bool canMouseClick;
+    private bool autoTest = false;
 
     void Start()
     {
@@ -97,7 +98,63 @@ public class PERoot : MonoBehaviour
                 }
             }
         }
+#region AutoTest
+
+        if(Input.GetKeyDown(KeyCode.T))
+            autoTest = !autoTest;
+        if(autoTest) {
+            var p1 = GetRandPos();
+            var p2 = GetRandPos();
+            List<NavVector3> cornerLst = navMap.CalNavPath(p1, p2);
+            if(cornerLst?.Count > 0) {
+                NavVector3 v1, v2;
+                v1 = cornerLst[0];
+                for(int i = 1; i < cornerLst.Count; i++) {
+                    v2 = cornerLst[i];
+
+                    NavVector3 center = (v1 + v2) / 2.0f;
+                    int areaID = navMap.GetNavAreaID(center);
+                    if(areaID == -1) {
+                        string info = "";
+                        for(int k = 0; k < cornerLst.Count; k++) {
+                            info += $" {cornerLst[k]}";
+                        }
+
+                        GameObject go = new GameObject();
+                        go.name = center.ToString();
+                        go.transform.position = center.ConvertToUnityVector();
+                        this.LogCyan($": {p1} to {p2} center:{center} posLst:{info}");
+                        break;
+                    }
+
+                    v1 = v2;
+                }
+            }
+        }
+
+#endregion
+        
     }
+
+
+#region AutoTest
+    
+    private NavVector3 GetRandPos()
+    {
+        while(true) {
+            System.Random rd = new System.Random();
+            float x = rd.Next(0, 100);
+            float z = rd.Next(0, 100);
+            Vector3 randPos = new Vector3(x, 0, z);
+            int areaID = navMap.GetNavAreaID(new NavVector3(randPos));
+            if(areaID != -1) {
+                return new NavVector3(randPos);
+            }
+        }
+    }
+
+#endregion"
+    
 
     private void InitNavConfig()
     {

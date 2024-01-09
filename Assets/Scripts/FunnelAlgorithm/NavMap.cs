@@ -135,19 +135,19 @@ namespace FunnelAlgorithm
             var startAreaID = GetNavAreaID(start);
             var targetAreaID = GetNavAreaID(end);
 
-            if (startAreaID != -1)
-                Debug.Log($"startAreaID:{startAreaID}");
+            if (startAreaID != -1){}
+               // Debug.Log($"startAreaID:{startAreaID}");
             else
             {
-                Debug.LogError("no such Area");
+                //Debug.LogError("no such Area");
                 return null;
             }
 
-            if (targetAreaID != -1)
-                Debug.Log($"targetAreaID:{targetAreaID}");
+            if (targetAreaID != -1){}
+               // Debug.Log($"targetAreaID:{targetAreaID}");
             else
             {
-                Debug.LogError("no such Area");
+                //Debug.LogError("no such Area");
                 return null;
             }
 
@@ -198,7 +198,7 @@ namespace FunnelAlgorithm
             return isIN;
         }
 
-        private int GetNavAreaID(NavVector3 pos)
+        public int GetNavAreaID(NavVector3 pos)
         {
             var areaID = -1;
             foreach (var area in areaArr)

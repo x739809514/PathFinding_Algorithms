@@ -50,7 +50,7 @@ namespace FunnelAlgorithm
                 for (int i = 1; i < connerList.Count; i++)
                 {
                     v2 = connerList[i];
-                    DebugDrawLine(v1,v2,Color.red,5);
+                    DebugDrawLine(v1,v2,Color.red,3);
                     v1 = v2;
                 }
                 
