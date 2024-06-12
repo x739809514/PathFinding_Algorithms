@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using FunnelAlgorithm;
 using PEUtils;
-using Unity.VisualScripting;
 using UnityEngine;
-using Update = UnityEngine.PlayerLoop.Update;
 using Vector3 = UnityEngine.Vector3;
 
+/// <summary>
+/// display class
+/// </summary>
 public class PERoot : MonoBehaviour
 {
     public Color wireColor;

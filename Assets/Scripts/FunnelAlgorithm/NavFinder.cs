@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using FunnelAlgorithm.Utility;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace FunnelAlgorithm
 {
+    /// <summary>
+    /// particular finding logic
+    /// </summary>
     public partial class NavMap
     {
 #region AStar

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace FunnelAlgorithm
 {
+    /// <summary>
+    /// class of single area
+    /// </summary>
     public class NavArea : IComparable<NavArea>
     {
         public readonly int[] indexArr;
