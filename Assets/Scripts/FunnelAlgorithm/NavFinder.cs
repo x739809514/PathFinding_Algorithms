@@ -40,14 +40,14 @@ namespace FunnelAlgorithm
                     closeList.Add(end);
                     break;
                 }
-
+                // get the area has highest priority, add it to close list
                 NavArea detectArea = openList.Dequeue();
                 if (!closeList.Contains(detectArea))
                 {
                     closeList.Add(detectArea);
                 }
 
-                //detect neighbour areas
+                //continue detect neighbors of the above area
                 for (int i = 0; i < detectArea.borderList.Count; i++)
                 {
                     NavBorder border = detectArea.borderList[i];
@@ -69,7 +69,7 @@ namespace FunnelAlgorithm
         private void DetectNeighbourArea(NavArea detectArea, NavArea neighbourArea)
         {
             if (!closeList.Contains(neighbourArea))
-            {
+            { 
                 float neighborDistance = detectArea.CalNavAreaDis(neighbourArea);
                 float newSumDistance = detectArea.sumDistance + neighborDistance;
                 //update area's sumdistance
@@ -88,7 +88,8 @@ namespace FunnelAlgorithm
                 }
             }
         }
-
+        
+        // output final path
         private List<NavArea> GetPathNavAreas(NavArea end)
         {
             List<NavArea> list = new List<NavArea>();
