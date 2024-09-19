@@ -105,7 +105,8 @@ The following are the steps to implement the A* algorithm:
      }
      ```
     **End**: constructs a path if the target node is found; if the open list is empty and no target node is found, it means there is no feasible path.
-   ```C#
+   
+ ```C#
 private NavArea startArea;
 private NavArea endArea;
 
@@ -153,7 +154,6 @@ public List<NavArea> CalAStarPolyPath(NavArea start, NavArea end)
 
     return pathList;
 }
-
 /// <summary>
 /// calculate priority for each neighbour area
 /// </summary>
@@ -181,7 +181,6 @@ private void DetectNeighbourArea(NavArea detectArea, NavArea neighbourArea)
         }
     }
 }
-
 // output final path
 private List<NavArea> GetPathNavAreas(NavArea end)
 {
